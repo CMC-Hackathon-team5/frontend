@@ -1,20 +1,28 @@
-import { View, Text, StyleSheet, SafeAreaView, TextInput, Button } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, StyleSheet, SafeAreaView, TextInput, Button, Pressable } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import CarrotMain from '../../assets/CarrotMain';
+import axios from 'axios'
 
 function SignUp() {
+  const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
-  const [emailMessage, setEmailMessage] = useState("");
-
   const [pwd, setPwd] = useState("");
   const [isPwd, setIsPwd] = useState(false);
-  const [pwdMessage, setPwdMessage] = useState("");
-
-  const [confirmPwd, setConfirmPwd] = useState("");
-  const [isPwdConfirm, setIsPwdConfirm] = useState(false);
-  const [pwdConfirmMessage, setPwdConfirmMessage] = useState("");
 
   const [isConfirm, setIsConfirm] = useState(false);
+
+  useEffect(() => {
+    if (isEmail && isPwd && nickname) {
+      setIsConfirm(true);
+    } else {
+      setIsConfirm(false);
+    }
+  }, [isEmail, isPwd, nickname])
+  const onChangeNickname = (e) => {
+    const { eventCount, target, text } = e.nativeEvent;
+    setNickname(text);
+  }
 
   const onChangeEmail = (e) => {
     const { eventCount, target, text } = e.nativeEvent;
@@ -23,10 +31,8 @@ function SignUp() {
     const emailCurrent = text;
     setEmail(text);
     if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage("잘못된 이메일 형식입니다.");
       setIsEmail(false);
     } else {
-      setEmailMessage("올바른 이메일 형식입니다.");
       setIsEmail(true);
     }
   }
@@ -38,46 +44,65 @@ function SignUp() {
     setPwd(pwdCurrent);
 
     if (!pwdRegex.test(pwdCurrent)) {
-      setPwdMessage("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.");
       setIsPwd(false);
     } else {
-      setPwdMessage("안전한 비밀번호입니다.");
       setIsPwd(true);
     }
   };
 
-  const onChangeConfirmPwd = (e) => {
-    const { eventCount, target, text } = e.nativeEvent;
-    const pwdConfirm = text;
-    let confirmResult = "";
-    setConfirmPwd(pwdConfirm);
-
-    if (pwd === pwdConfirm) {
-      setPwdConfirmMessage("비밀번호가 일치합니다.");
-      setIsPwdConfirm(true);
-      confirmResult = true;
-    } else {
-      setPwdConfirmMessage("비밀번호가 일치하지 않습니다.");
-      setIsPwdConfirm(false);
-      confirmResult = false;
-    }
-
-    if (isEmail && isPwd && confirmResult) {
-      setIsConfirm(true);
-    } else {
-      setIsConfirm(false);
-    }
-  };
-
-  const handleSubmit = (obj) => {
-    alert(obj.email)
-    alert(obj.email)
+  const handleSubmit = async (email, pwd, nickname) => {
+    console.log({
+      "email": email, "password": pwd, "name": nickname
+    })
+    // const headers = {
+    //   'Content-Type' : 'application/json',
+    // }
+    // try {
+    //   console.log(email, pwd, nickname)
+    //   const res = await axios.post('http://gcpeter.shop:8080/api/user/signup', {
+    //     "email": email, "password": pwd, "name": nickname
+    //   }, {headers: headers})
+    //   console.log(res)
+    // } catch(err) {
+    //   console.log(err)
+    // }
+    const res = await axios({
+      headers: { 
+        withCredentials: true,
+        "Access-Control-Allow-Origin": "http://localhost:8081",
+        'Accept': 'application/json',
+        'Content-Type' : 'application/json',
+      },
+      method: 'post',
+      url: 'http://gcpeter.shop:8080/api/user/signup',
+      data: {
+        "email": email,
+        "password": pwd,
+        "name": nickname,
+      }
+    })
+    .then((res) => {
+      alert('회원가입 완료')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <CarrotMain style={styles.carrot} />
+      <View style={styles.form}>
         <Text style={styles.title}>회원가입</Text>
+        <View style={styles.inputWrap}>
+          <TextInput
+            style={styles.input}
+            placeholder="닉네임"
+            onChange={(e) => onChangeNickname(e)}
+            value={nickname}
+            autoCapitalize='none'
+          />
+        </View>
         <View style={styles.inputWrap}>
           <TextInput
             style={styles.input}
@@ -86,9 +111,8 @@ function SignUp() {
             value={email}
             autoCapitalize='none'
           />
-          <Text style={styles.message}>{emailMessage}</Text>
         </View>
-        <View>
+        <View style={styles.inputWrap}>
           <TextInput
             style={styles.input}
             placeholder="비밀번호"
@@ -96,22 +120,12 @@ function SignUp() {
             value={pwd}
             autoCapitalize='none'
           />
-          <Text style={styles.message}>{pwdMessage}</Text>
         </View>
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호 확인"
-            onChange={(e) => onChangeConfirmPwd(e)}
-            value={isPwdConfirm}
-            autoCapitalize='none'
-          />
-          <Text style={styles.message}>{pwdConfirmMessage}</Text>
-        </View>
-        <Button
-          onPress={() => handleSubmit({ "email": email, "pwd": pwd })}
-          title="회원가입"
-        />
+        <Pressable
+          style={btnStyle(isConfirm).btn}
+          onPress={() => handleSubmit(email, pwd, nickname)}
+          disabled={isConfirm ? false : true}
+        ><Text style={btnStyle(isConfirm).text}>회원가입</Text></Pressable>
       </View>
     </SafeAreaView>
   )
@@ -121,30 +135,64 @@ function SignUp() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    padding: '10%',
+    display: 'flex',
+    justifyContent: 'center',
     backgroundColor: "#ffffff",
     textAlign: 'center',
-    marginVertical: '30%'
+  },
+  carrot: {
+    position: 'relative',
+    left: '75%'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#B9B9B9',
+    paddingVertical: 36,
+    marginHorizontal: 30,
+    borderRadius: 20,
+    backgroundColor: '#FDFF9E'
   },
   title: {
-    fontSize: 24,
-    textAlign: 'left',
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 36,
+    fontWeight: 'bold'
+  },
+  inputWrap: {
+    width: '80%',
     marginBottom: 20
   },
   input: {
-    paddingVertical: 20,
-    paddingHorizontal: 26,
-    borderRadius: 10,
-    borderColor: 'lightgray',
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    borderRadius: 15,
+    borderColor: '#B9B9B9',
     borderWidth: 1,
     fontSize: 16,
-    color: 'black'
-  },
-  message: {
-    marginVertical: 6,
-    marginHorizontal: 4
+    color: 'black',
+    backgroundColor: '#FFFFFF',
   }
+});
+
+const btnStyle = (isConfirm) => StyleSheet.create({
+  btn: {
+    backgroundColor: isConfirm ? '#E2FFA4' : '#B9b9b9',
+    width: '80%',
+    borderRadius: 15,
+
+  },
+  text: {
+    color: isConfirm ? '#000000' : '#FFFFFF',
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    textAlign: 'center',
+    fontWeight: 'bold'
+  }
+
 });
 
 export default SignUp;

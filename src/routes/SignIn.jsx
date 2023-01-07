@@ -1,16 +1,22 @@
-import { View, Text, StyleSheet, SafeAreaView, TextInput, Button } from 'react-native'
-import React, { useState } from 'react'
+import { View, Text, StyleSheet, SafeAreaView, TextInput, Button, Pressable } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import CarrotMain from '../../assets/CarrotMain';
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
-  const [emailMessage, setEmailMessage] = useState("");
-
   const [pwd, setPwd] = useState("");
   const [isPwd, setIsPwd] = useState(false);
-  const [pwdMessage, setPwdMessage] = useState("");
 
   const [isConfirm, setIsConfirm] = useState(false);
+
+  useEffect(() => {
+    if (isEmail && isPwd) {
+      setIsConfirm(true);
+    } else {
+      setIsConfirm(false);
+    }
+  }, [isEmail, isPwd])
 
   const onChangeEmail = (e) => {
     const { eventCount, target, text } = e.nativeEvent;
@@ -19,10 +25,8 @@ function SignIn() {
     const emailCurrent = text;
     setEmail(text);
     if (!emailRegex.test(emailCurrent)) {
-      setEmailMessage("잘못된 이메일 형식입니다.");
       setIsEmail(false);
     } else {
-      setEmailMessage("올바른 이메일 형식입니다.");
       setIsEmail(true);
     }
   }
@@ -34,28 +38,20 @@ function SignIn() {
     setPwd(pwdCurrent);
 
     if (!pwdRegex.test(pwdCurrent)) {
-      setPwdMessage("숫자+영문자+특수문자 조합으로 8자리 이상 입력해주세요.");
       setIsPwd(false);
     } else {
-      setPwdMessage("안전한 비밀번호입니다.");
       setIsPwd(true);
-    }
-
-    if (isEmail && isPwd) {
-      setIsConfirm(true);
-    } else {
-      setIsConfirm(false);
     }
   };
 
-  const handleSubmit = (obj) => {
-    alert(obj.email)
-    alert(obj.email)
+  const handleSubmit = (email, pwd) => {
+    console.log( email, pwd)
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <CarrotMain style={styles.carrot}/>
+      <View style={styles.form}>
         <Text style={styles.title}>로그인</Text>
         <View style={styles.inputWrap}>
           <TextInput
@@ -65,9 +61,8 @@ function SignIn() {
             value={email}
             autoCapitalize='none'
           />
-          <Text style={styles.message}>{emailMessage}</Text>
         </View>
-        <View>
+        <View style={styles.inputWrap}>
           <TextInput
             style={styles.input}
             placeholder="비밀번호"
@@ -75,12 +70,12 @@ function SignIn() {
             value={pwd}
             autoCapitalize='none'
           />
-          <Text style={styles.message}>{pwdMessage}</Text>
         </View>
-        <Button
-          onPress={() => handleSubmit({ "email": email, "pwd": pwd })}
-          title="로그인"
-        />
+        <Pressable
+          style={btnStyle(isConfirm).btn}
+          onPress={() => handleSubmit(email, pwd)}
+          disabled={isConfirm ? false : true}
+        ><Text style={btnStyle(isConfirm).text}>로그인</Text></Pressable>
       </View>
     </SafeAreaView>
   )
@@ -90,30 +85,63 @@ function SignIn() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    width: '100%',
-    padding: '10%',
+    display: 'flex',
+    justifyContent: 'center',
     backgroundColor: "#ffffff",
     textAlign: 'center',
-    marginVertical: '30%'
+  },
+  carrot: {
+    position: 'relative',
+    left: '75%'
+  },
+  form: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: '#B9B9B9',
+    paddingVertical: 36,
+    marginHorizontal: 30,
+    borderRadius: 20,
+    backgroundColor: '#FDFF9E'
   },
   title: {
-    fontSize: 24,
-    textAlign: 'left',
+    fontSize: 20,
+    textAlign: 'center',
+    marginBottom: 36,
+    fontWeight: 'bold'
+  },
+  inputWrap: {
+    width: '80%',
     marginBottom: 20
   },
   input: {
-    paddingVertical: 20,
-    paddingHorizontal: 26,
-    borderRadius: 10,
-    borderColor: 'lightgray',
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    borderRadius: 15,
+    borderColor: '#B9B9B9',
     borderWidth: 1,
     fontSize: 16,
-    color: 'black'
-  },
-  message: {
-    marginVertical: 6,
-    marginHorizontal: 4
+    color: 'black',
+    backgroundColor: '#FFFFFF',
   }
+});
+
+const btnStyle = (isConfirm) => StyleSheet.create({
+  btn: {
+    backgroundColor: isConfirm ? '#E2FFA4' : '#B9b9b9',
+    width: '80%',
+    borderRadius: 15,
+  },
+  text :{
+    color: isConfirm ? '#000000' : '#FFFFFF',
+    paddingVertical: 18,
+    paddingHorizontal: 24,
+    textAlign: 'center',
+    fontWeight: 'bold'
+  }
+ 
 });
 
 export default SignIn;
