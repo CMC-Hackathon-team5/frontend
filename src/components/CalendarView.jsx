@@ -1,31 +1,37 @@
 import React, { useState } from 'react'
-import { Button, Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
-import { format, startOfMonth } from 'date-fns';
+import { Button, Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { addMonths, format, startOfMonth, subMonths } from 'date-fns';
 import CalenderMain from './CalenderMain';
 
 function CalendarView() {
-  const date = new Date();
-  const [currYear, setCurrYear] = useState(date.getFullYear())
-  const [currMonth, setCurrMonth] = useState(date.getMonth()+1)
-  const [selectedDate, setSelectedDate] = useState(
-    format(date, "yyyy년 MM월 dd일")
-  );
+  const [currDate, setCurrDate] = useState(new Date())
   const [isSelected, setIsSelected] = useState(false);
   const days = ['일', '월', '화', '수', '목', '금', '토']
+
+  const prevMonth = () => {
+    setCurrDate(subMonths(currDate, 1));
+  }
+  const nextMonth = () => {
+    setCurrDate(addMonths(currDate, 1));
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <Button style={styles.arrow} title="<" color='#FFB44E'/>
-        <Text style={styles.month}>{currYear}년 {currMonth}월</Text>
-        <Button style={styles.arrow} title=">" color='#FFB44E'/>
+        <Button style={styles.arrow} title="<" color='#FFB44E' onPress={prevMonth}/>
+        <Text style={styles.month}>{format(currDate, 'yyyy')}년 {format(currDate, 'M')}월</Text>
+        <Button style={styles.arrow} title=">" color='#FFB44E' onPress={nextMonth}/>
       </View>
       <View style={styles.days}>
         {days.map((d) => (
-          <Text style={styles.day}>{d}</Text>
+          <Text style={dayStyles(d).day}>{d}</Text>
         ))}
       </View>
-      <CalenderMain currMonth={currMonth} selectedDate={selectedDate}/>
+      <CalenderMain 
+        currDate={currDate}
+        prevMonth={prevMonth}
+        nextMonth={nextMonth}
+      />
     </SafeAreaView>
   )
 }
@@ -33,7 +39,6 @@ function CalendarView() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
-    height: '100%',
     marginHorizontal: 20,
   },
   header: {
@@ -46,17 +51,18 @@ const styles = StyleSheet.create({
     fontSize: 26,
     textAlign: 'center'
   },
-  arrow: {
-   
-  },
   days: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginVertical: 16,
   },
+  
+});
+
+const dayStyles = (d) => StyleSheet.create({
   day: {
-    color: '#000000'
+    color: d === '일' ? 'red' : d === '토' ? 'blue': '#000000'
   }
 });
 
