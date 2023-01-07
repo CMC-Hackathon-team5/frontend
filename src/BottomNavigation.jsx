@@ -6,6 +6,8 @@ import Alarm from './routes/Alarm';
 import UnSelectTab from '../assets/UnSelectTab';
 import SelectTab from '../assets/SelectTab';
 import MyLog from './routes/MyLog';
+import SignUp from './routes/SignUp';
+import SignIn from './routes/SignIn';
 
 const Tab = createBottomTabNavigator();
 

@@ -54,39 +54,14 @@ function SignUp() {
     console.log({
       "email": email, "password": pwd, "name": nickname
     })
-    // const headers = {
-    //   'Content-Type' : 'application/json',
-    // }
-    // try {
-    //   console.log(email, pwd, nickname)
-    //   const res = await axios.post('http://gcpeter.shop:8080/api/user/signup', {
-    //     "email": email, "password": pwd, "name": nickname
-    //   }, {headers: headers})
-    //   console.log(res)
-    // } catch(err) {
-    //   console.log(err)
-    // }
-    const res = await axios({
-      headers: { 
-        withCredentials: true,
-        "Access-Control-Allow-Origin": "http://localhost:8081",
-        'Accept': 'application/json',
-        'Content-Type' : 'application/json',
-      },
-      method: 'post',
-      url: 'http://gcpeter.shop:8080/api/user/signup',
-      data: {
-        "email": email,
-        "password": pwd,
-        "name": nickname,
-      }
-    })
-    .then((res) => {
-      alert('회원가입 완료')
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    const config = {headers: {
+      'Content-Type' : 'application/json',
+    }}
+    await axios.post('http://118.67.130.242:8080/api/user/signup', {
+      "email": email, "password": pwd, "name": nickname
+    },config)
+    .then(res => console.log("성공", res))
+    .catch(err =>console.log(err))
   };
 
   return (

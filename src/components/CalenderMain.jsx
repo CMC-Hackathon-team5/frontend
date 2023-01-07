@@ -6,10 +6,10 @@ import Carrot80 from '../../assets/Carrot80'
 import Carrot20 from '../../assets/Carrot20'
 import Carrot40 from '../../assets/Carrot40'
 import Carrot60 from '../../assets/Carrot60'
-//import axios from 'axios';
+import axios from 'axios';
 import Axios from '../common'
 
-function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate }) {
+function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, setDate }) {
   const date = format(currDate, 'yyyy-MM-dd');
   const monthStart = startOfMonth(currDate)
   const monthEnd = endOfMonth(monthStart)
@@ -20,77 +20,30 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate }
   const year = format(currDate, 'yyyy')
   const month = format(currDate, 'M')
 
+  const [perObj, setPerObj] = useState({});
+
   const rows = [];
   let days = [];
   let day = startDate;
   let formattendDate = '';
-
-  const getData = async () => {
-    const response = await Axios.get('improvement-management/todo/month?date=2023-01-27');
-    console.log(response);
-  }
+  
   useEffect(() => {
-    getData();
-    // axios({
-    //   headers: {
-    //     withCredentials: true,
-    //     'Accept': '*/*',
-    //   },
-    //   method: 'get',
-    //   url: `http://gcpeter.shop:8080/api/improvement-management/todo/month`,
-    //   params: {
-    //     date: '2023-01-27'
-    //   }
-    // }).then((res) => {
-    //   console.log(res)
-    // }).catch((err) => {
-    //   console.log(err)
-    // })
+    axios.get( `http://118.67.130.242:8080/api/improvement-management/todo/month?date=${date}`)
+    .then((res) => {
+      console.log( res.data.data)
+      setPerObj(res.data.data)
+    })
+    .catch((error) => {
+      console.log(err)
+    })
+  }, [month])
 
-  }, [selectedDate])
 
   const onClickedDate = (cloneDay) => {
-    // let date = format(cloneDay, 'yyyy-MM-dd');
-    // console.log(date)
-    setSelectedDate(format(cloneDay, 'yyyy년 M월 d일'));
+    setDate(format(cloneDay, 'yyyy-MM-dd'));
+    setSelectedDate(format(cloneDay, 'yyyy년 MM월 dd일'));
     setIsSelected(true);
-
-    // axios({
-    //   headers: {
-    //     withCredentials: true,
-    //     "Access-Control-Allow-Origin": "http://localhost:3000",
-    //     'Accept': 'application/json',
-    //   },
-    //   method: 'get',
-    //   url: `http://gcpeter.shop:8080/api/improvement-management/todo`,
-    //   params: {
-    //     date: date
-    //   }
-    // }).then((res) => {
-    //   console.log(res)
-    // }).catch((err) => {
-    //   console.log(err)
-    // })
   }
-  let tmp = [{
-    date: "2023-1-17",
-    per: 30
-  }, {
-    date: "2023-1-7",
-    per: 100
-  },
-  {
-    date: "2023-1-10",
-    per: 10
-  },
-  {
-    date: "2023-1-11",
-    per: 70
-  },
-  {
-    date: "2023-1-19",
-    per: 0
-  }]
 
   const carrotIcon = (per) => {
     if (per == 0) {
@@ -113,8 +66,8 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate }
       formattendDate = format(day, 'd')
       const cloneDay = day;
       let state = isSameMonth(day, monthStart)
-      let dateStr = `${year}-${month}-${formattendDate}`
-      let obj = tmp.find(e => e.date === dateStr)
+      let dateStr = format(cloneDay, 'yyyy-MM-dd');
+      let obj = perObj.find(e => e.date === dateStr)
 
       days.push(
         <Pressable
@@ -125,7 +78,7 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate }
           }}
         >
           <Text style={styles(state).day}>{formattendDate}</Text>
-          {(obj !== undefined) && carrotIcon(obj.per)}
+          {(obj !== undefined) && carrotIcon(obj.percent)}
         </Pressable>
       )
       day = addDays(day, 1);

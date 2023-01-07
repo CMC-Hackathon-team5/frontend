@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, SafeAreaView, TextInput, Button, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CarrotMain from '../../assets/CarrotMain';
+import axios from 'axios';
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -44,8 +45,25 @@ function SignIn() {
     }
   };
 
-  const handleSubmit = (email, pwd) => {
-    console.log( email, pwd)
+  const handleSubmit = async (email, pwd) => {
+    console.log({
+      "email": email, "password": pwd
+    })
+    const res = await axios({
+      headers: {
+        'Content-Type' : 'application/json',
+      },
+      method: 'post',
+      url: 'http://118.67.130.242:8080/api/user/login',
+      date: {
+        "email": email, "password": pwd
+      }
+    })
+    .then(res => {
+      console.log(res)
+      alert("로그인에 성공하였습니다.");
+    })
+    .catch(err =>console.log(err))
   };
 
   return (

@@ -3,7 +3,7 @@ import { Button, Image, Pressable, SafeAreaView, StyleSheet, Text, View } from '
 import { addMonths, format, startOfMonth, subMonths } from 'date-fns';
 import CalenderMain from './CalenderMain';
 
-function CalendarView({setSelectedDate, selectedDate, setIsSelected}) {
+function CalendarView({setSelectedDate, selectedDate, setIsSelected, setDate}) {
   const [currDate, setCurrDate] = useState(new Date())
   const days = ['일', '월', '화', '수', '목', '금', '토']
 
@@ -31,6 +31,7 @@ function CalendarView({setSelectedDate, selectedDate, setIsSelected}) {
         setSelectedDate={setSelectedDate}
         selectedDate={selectedDate}
         setIsSelected={setIsSelected}
+        setDate={setDate}
         />
     </>
   )
