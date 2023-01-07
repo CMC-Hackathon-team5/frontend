@@ -75,12 +75,10 @@ function SignUp() {
   };
 
   return (
-    <SafeAreaView>
-      <View style={styles.container}>
-        <View style={styles.titleWrap}>
-          <Text style={styles.title}>회원가입</Text>
-        </View>
-        <View>
+    <SafeAreaView style={styles.container}>
+      <View>
+        <Text style={styles.title}>회원가입</Text>
+        <View style={styles.inputWrap}>
           <TextInput
             style={styles.input}
             placeholder="이메일"
@@ -88,7 +86,7 @@ function SignUp() {
             value={email}
             autoCapitalize='none'
           />
-          <Text>{emailMessage}</Text>
+          <Text style={styles.message}>{emailMessage}</Text>
         </View>
         <View>
           <TextInput
@@ -98,7 +96,7 @@ function SignUp() {
             value={pwd}
             autoCapitalize='none'
           />
-          <Text>{pwdMessage}</Text>
+          <Text style={styles.message}>{pwdMessage}</Text>
         </View>
         <View>
           <TextInput
@@ -108,7 +106,7 @@ function SignUp() {
             value={isPwdConfirm}
             autoCapitalize='none'
           />
-          <Text>{pwdConfirmMessage}</Text>
+          <Text style={styles.message}>{pwdConfirmMessage}</Text>
         </View>
         <Button
           onPress={() => handleSubmit({ "email": email, "pwd": pwd })}
@@ -120,43 +118,32 @@ function SignUp() {
 
 };
 
-
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-
     width: '100%',
-    padding: '20%',
+    padding: '10%',
     backgroundColor: "#ffffff",
     textAlign: 'center',
-    // shadowColor: "#000",
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
-    fontWeight: 'bold'
-  },
-  titleWrap: {
-
+    marginVertical: '30%'
   },
   title: {
     fontSize: 24,
+    textAlign: 'left',
+    marginBottom: 20
   },
   input: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+    paddingVertical: 20,
+    paddingHorizontal: 26,
+    borderRadius: 10,
+    borderColor: 'lightgray',
+    borderWidth: 1,
+    fontSize: 16,
+    color: 'black'
+  },
+  message: {
+    marginVertical: 6,
+    marginHorizontal: 4
   }
 });
 
