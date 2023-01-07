@@ -14,8 +14,15 @@ function MyLog({ navigation }) {
   const [todo, setTodo] = useState({});
 
   useEffect(() => {
-    let obj = todoDummy.filter((e) => e.date.includes(date))
-    setTodo(obj)
+    axios.get( `http://118.67.130.242:8080/api/improvement-management/todo/?date=${date}`)
+    .then((res) => {
+      console.log("성공", res.data.data)
+      setTodo(res.data.data)
+    })
+    .catch((error) => {
+      console.log(err)
+    })
+   
   }, [selectedDate])
   return (
     <SafeAreaView style={styles.container}>

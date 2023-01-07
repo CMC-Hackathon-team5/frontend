@@ -7,7 +7,6 @@ import Carrot20 from '../../assets/Carrot20'
 import Carrot40 from '../../assets/Carrot40'
 import Carrot60 from '../../assets/Carrot60'
 import axios from 'axios';
-import Axios from '../common'
 
 function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, setDate }) {
   const date = format(currDate, 'yyyy-MM-dd');
@@ -30,7 +29,6 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, 
   useEffect(() => {
     axios.get( `http://118.67.130.242:8080/api/improvement-management/todo/month?date=${date}`)
     .then((res) => {
-      console.log( res.data.data)
       setPerObj(res.data.data)
     })
     .catch((error) => {
@@ -67,7 +65,7 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, 
       const cloneDay = day;
       let state = isSameMonth(day, monthStart)
       let dateStr = format(cloneDay, 'yyyy-MM-dd');
-      let obj = perObj.find(e => e.date === dateStr)
+      let obj = perObj.find((e) => e.date === dateStr)
 
       days.push(
         <Pressable
