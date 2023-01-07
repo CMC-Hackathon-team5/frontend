@@ -5,50 +5,35 @@ import CalendarView from '../components/CalendarView';
 import TodoItem from '../components/TodoItem';
 import axios from 'axios';
 import Axios from '../common';
+import {todoDummy} from '../data/todoDummy';
 
 function MyLog({ navigation }) {
   const [selectedDate, setSelectedDate] = useState("");
   const [isSelected, setIsSelected] = useState(false);
-
-  const getData = async () => {
-    // console.log(selectedDate)
-    // const response = await Axios.get(`/api/improvement-management/todo/?date=${'2023-01-27'}`);
-    // console.log(response);
-  }
+  const [date, setDate] = useState("");
+  const [todo, setTodo] = useState({});
 
   useEffect(() => {
-   getData()
-    // axios({
-    //   headers: {
-    //     withCredentials: true,
-    //     "Access-Control-Allow-Origin": "http://localhost:3000",
-    //     'Accept': 'application/json',
-    //   },
-    //   method: 'get',
-    //   url: `http://gcpeter.shop:8080/api/improvement-management/todo`,
-    //   params: {
-    //     date: '2023-01-27'
-    //   }
-    // }).then((res) => {
-    //   console.log(res)
-    // }).catch((err) => {
-    //   console.log(err)
-    // })
+    let obj = todoDummy.filter((e) => e.date.includes(date))
+    setTodo(obj)
   }, [selectedDate])
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.view}>
-          <CalendarView setSelectedDate={setSelectedDate} selectedDate={selectedDate} setIsSelected={setIsSelected}/>
+          <CalendarView 
+            setSelectedDate={setSelectedDate} 
+            selectedDate={selectedDate} 
+            setIsSelected={setIsSelected}
+            setDate={setDate}
+          />
 
           {isSelected && <>
             <Text style={styles.date}>{selectedDate}</Text>
 
-            <TodoItem checked text="dummy text !" />
-            <TodoItem checked text="dummy text !" />
-            <TodoItem checked text="dummy text !" />
-            <TodoItem checked text="dummy text !" />
-            <TodoItem checked text="dummy text !" />
+            {todo.map((todo) => (
+                <TodoItem checked={!todo.done} text={todo.title} />
+            ))}
           </>}
 
           <View style={styles.title}>
