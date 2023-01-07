@@ -3,9 +3,8 @@ import { Button, Image, Pressable, SafeAreaView, StyleSheet, Text, View } from '
 import { addMonths, format, startOfMonth, subMonths } from 'date-fns';
 import CalenderMain from './CalenderMain';
 
-function CalendarView() {
+function CalendarView({setSelectedDate, setIsSelected}) {
   const [currDate, setCurrDate] = useState(new Date())
-  const [isSelected, setIsSelected] = useState(false);
   const days = ['일', '월', '화', '수', '목', '금', '토']
 
   const prevMonth = () => {
@@ -29,8 +28,8 @@ function CalendarView() {
       </View>
       <CalenderMain 
         currDate={currDate}
-        prevMonth={prevMonth}
-        nextMonth={nextMonth}
+        setSelectedDate={setSelectedDate}
+        setIsSelected={setIsSelected}
         />
     </>
   )

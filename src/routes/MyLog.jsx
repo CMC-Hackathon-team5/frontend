@@ -4,29 +4,30 @@ import MoreIcon from '../../assets/MoreIcon';
 import CalendarView from '../components/CalendarView';
 import TodoItem from '../components/TodoItem';
 
-function MyLog({navigation}) {
-  const date = new Date()
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1
-  const day = date.getDate()
+function MyLog({ navigation }) {
+  const [selectedDate, setSelectedDate] = useState("");
+  const [isSelected, setIsSelected] = useState(false);
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.view}>
-          <CalendarView />
-          <Text style={styles.date}>{year}년 {month}월 {day}일</Text>
+          <CalendarView setSelectedDate={setSelectedDate} setIsSelected={setIsSelected}/>
 
-          <TodoItem checked text="dummy text !" />
-          <TodoItem checked text="dummy text !" />
-          <TodoItem checked text="dummy text !" />
-          <TodoItem checked text="dummy text !" />
-          <TodoItem checked text="dummy text !" />
+          {isSelected && <>
+            <Text style={styles.date}>{selectedDate}</Text>
 
-          <View style={styles.title}>
-            <Text style={styles.text}>오늘의 자기 개발 회고</Text>
-            <MoreIcon color="#B9B9B9" />
-          </View> 
+            <TodoItem checked text="dummy text !" />
+            <TodoItem checked text="dummy text !" />
+            <TodoItem checked text="dummy text !" />
+            <TodoItem checked text="dummy text !" />
+            <TodoItem checked text="dummy text !" />
+
+            <View style={styles.title}>
+              <Text style={styles.text}>오늘의 자기 개발 회고</Text>
+              <MoreIcon color="#B9B9B9" />
+            </View>
+          </>}
         </View>
       </ScrollView>
     </SafeAreaView>

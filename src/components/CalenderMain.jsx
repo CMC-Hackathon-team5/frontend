@@ -1,20 +1,20 @@
-import { View, Text, SafeAreaView, StyleSheet, Dimensions } from 'react-native'
-import React from 'react'
-import { addDays, endOfMonth, endOfWeek, format, isSameMonth, startOfMonth, startOfWeek } from 'date-fns'
+import { View, Text, SafeAreaView, StyleSheet, Dimensions, Pressable, Button } from 'react-native'
+import React, { useState } from 'react'
+import { addDays, endOfMonth, endOfWeek, format, isSameMonth, parse, startOfMonth, startOfWeek } from 'date-fns'
 import Carrot100 from '../../assets/Carrot100'
 import Carrot80 from '../../assets/Carrot80'
 import Carrot20 from '../../assets/Carrot20'
 import Carrot40 from '../../assets/Carrot40'
 import Carrot60 from '../../assets/Carrot60'
 
-function CalenderMain({ currDate, prevMonth, nextMonth }) {
+function CalenderMain({ currDate, setSelectedDate, setIsSelected }) {
   const date = format(currDate, 'yyyy-MM-dd');
   const monthStart = startOfMonth(currDate)
   const monthEnd = endOfMonth(monthStart)
   const startDate = startOfWeek(monthStart)
   const endDate = endOfWeek(monthEnd)
   const dayWrapWidth = Math.floor(Dimensions.get('window').width / 8);
-  
+
   const year = format(currDate, 'yyyy')
   const month = format(currDate, 'M')
 
@@ -26,7 +26,7 @@ function CalenderMain({ currDate, prevMonth, nextMonth }) {
   let tmp = [{
     date: "2023-1-17",
     per: 30
-  },{
+  }, {
     date: "2023-1-7",
     per: 100
   },
@@ -47,7 +47,7 @@ function CalenderMain({ currDate, prevMonth, nextMonth }) {
     if (per == 0) {
       return false;
     } else if (per <= 20) {
-      return <Carrot20/>
+      return <Carrot20 />
     } else if (per <= 40) {
       return <Carrot40 />
     } else if (per <= 60) {
@@ -56,7 +56,7 @@ function CalenderMain({ currDate, prevMonth, nextMonth }) {
       return <Carrot80 />
     } else if (per <= 100) {
       return <Carrot100 />
-    } 
+    }
   }
 
   while (day <= endDate) {
@@ -66,26 +66,30 @@ function CalenderMain({ currDate, prevMonth, nextMonth }) {
       let state = isSameMonth(day, monthStart)
       let dateStr = `${year}-${month}-${formattendDate}`
       let obj = tmp.find(e => e.date === dateStr)
-      
+
       days.push(
-        <View
+        <Pressable
           style={dayStyles(dayWrapWidth, state).dayWrap}
           key={day}
+          onPress={() => {
+            setSelectedDate(format(cloneDay, 'yyyy년 M월 d일'));
+            setIsSelected(true);
+          }}
         >
           <Text style={styles(state).day}>{formattendDate}</Text>
           {(obj !== undefined) && carrotIcon(obj.per)}
-        </View>
+        </Pressable>
       )
       day = addDays(day, 1);
     }
     rows.push(
-      <View style={style.week}>{days}</View>
+      <View style={style.week} key={day}>{days}</View>
     )
     days = [];
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={style.container}>
       <View style={style.rows}>
         {rows}
       </View>
@@ -96,6 +100,10 @@ function CalenderMain({ currDate, prevMonth, nextMonth }) {
 export default CalenderMain;
 
 const style = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFFFFF'
+  },
   week: {
     display: 'flex',
     flexDirection: 'row',
@@ -103,13 +111,9 @@ const style = StyleSheet.create({
   },
 })
 
-const styles = (dayWrapWidth, state) => StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFFFFF'
-  },
+const styles = (state) => StyleSheet.create({
   day: {
-    color: state ? '#000000' : '#b7b6b6',
+    color: state ? '#000000' : '#807f7f',
   },
 });
 
