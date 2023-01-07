@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, SafeAreaView, TextInput, Button } from 'react-native'
 import React, { useState } from 'react'
 
-function SignUp() {
+function SignIn() {
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
   const [emailMessage, setEmailMessage] = useState("");
@@ -9,10 +9,6 @@ function SignUp() {
   const [pwd, setPwd] = useState("");
   const [isPwd, setIsPwd] = useState(false);
   const [pwdMessage, setPwdMessage] = useState("");
-
-  const [confirmPwd, setConfirmPwd] = useState("");
-  const [isPwdConfirm, setIsPwdConfirm] = useState(false);
-  const [pwdConfirmMessage, setPwdConfirmMessage] = useState("");
 
   const [isConfirm, setIsConfirm] = useState(false);
 
@@ -44,25 +40,8 @@ function SignUp() {
       setPwdMessage("안전한 비밀번호입니다.");
       setIsPwd(true);
     }
-  };
 
-  const onChangeConfirmPwd = (e) => {
-    const { eventCount, target, text } = e.nativeEvent;
-    const pwdConfirm = text;
-    let confirmResult = "";
-    setConfirmPwd(pwdConfirm);
-
-    if (pwd === pwdConfirm) {
-      setPwdConfirmMessage("비밀번호가 일치합니다.");
-      setIsPwdConfirm(true);
-      confirmResult = true;
-    } else {
-      setPwdConfirmMessage("비밀번호가 일치하지 않습니다.");
-      setIsPwdConfirm(false);
-      confirmResult = false;
-    }
-
-    if (isEmail && isPwd && confirmResult) {
+    if (isEmail && isPwd) {
       setIsConfirm(true);
     } else {
       setIsConfirm(false);
@@ -75,9 +54,9 @@ function SignUp() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <View>
-        <Text style={styles.title}>회원가입</Text>
+    <SafeAreaView>
+      <View style={styles.container}>
+        <Text style={styles.title}>로그인</Text>
         <View style={styles.inputWrap}>
           <TextInput
             style={styles.input}
@@ -98,19 +77,9 @@ function SignUp() {
           />
           <Text style={styles.message}>{pwdMessage}</Text>
         </View>
-        <View>
-          <TextInput
-            style={styles.input}
-            placeholder="비밀번호 확인"
-            onChange={(e) => onChangeConfirmPwd(e)}
-            value={isPwdConfirm}
-            autoCapitalize='none'
-          />
-          <Text style={styles.message}>{pwdConfirmMessage}</Text>
-        </View>
         <Button
           onPress={() => handleSubmit({ "email": email, "pwd": pwd })}
-          title="회원가입"
+          title="로그인"
         />
       </View>
     </SafeAreaView>
@@ -147,4 +116,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUp;
+export default SignIn;
