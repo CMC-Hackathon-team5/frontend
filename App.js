@@ -24,6 +24,7 @@ const App = () => {
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name='root' component={BottomNavigation} />
         <Stack.Screen name='signUp' component={SignUp} />
+        <Stack.Screen name='signIn' component={SignIn} />
         <Stack.Screen name='CalendarView' component={CalendarView} />
         <Stack.Screen name='AddTodo' component={AddTodo} />
       </Stack.Navigator>
