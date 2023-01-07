@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-const SelectItem = () => {
+const SelectItem = (props) => {
   return (
     // <View style={styles.container}>
     <Text>
       <Text style={styles.container}>
-        read book
+        {props.text}
         </Text>
     </Text>
     // </View>
