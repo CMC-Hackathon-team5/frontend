@@ -10,19 +10,14 @@ const Tab = createBottomTabNavigator();
 function Home() {
   return <Text>Home</Text>;
 }
-function Search() {
-  return <Text>Search</Text>;
-}
 
 const BottomNavigation = () => {
   return (
-      <Tab.Navigator initialRouteName="Home"
-      // screenOptions={{ headerShown: false }}
-      >
+      <Tab.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
+        <Tab.Screen name="MyPage" component={MyPage} />
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Search" component={CalendarView} />
         <Tab.Screen name="SignUp" component={SignUp} />
-        <Tab.Screen name="MyPage" component={MyPage} />
       </Tab.Navigator>
   )
 }
