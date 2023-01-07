@@ -1,16 +1,11 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Button } from 'react-native';
 
-function MyPage({navigation}) {
+function Test({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <View>
-        {/* <Button style={{ padding: 10}} title="button" onPress={() => {
-          console.log('press')
-          navigation.navigate('Test')
-          }}>
-        </Button> */}
-        
+        <Text>hellp</Text>
       </View>
     </SafeAreaView>
   )
@@ -25,4 +20,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MyPage;
+export default Test;
