@@ -1,6 +1,7 @@
 import { View, Text, StyleSheet, SafeAreaView, TextInput, Button, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import CarrotMain from '../../assets/CarrotMain';
+import axios from 'axios'
 
 function SignUp() {
   const [nickname, setNickname] = useState("");
@@ -49,13 +50,48 @@ function SignUp() {
     }
   };
 
-  const handleSubmit = (nickname, email, pwd) => {
-    console.log(nickname, email, pwd)
+  const handleSubmit = async (email, pwd, nickname) => {
+    console.log({
+      "email": email, "password": pwd, "name": nickname
+    })
+    // const headers = {
+    //   'Content-Type' : 'application/json',
+    // }
+    // try {
+    //   console.log(email, pwd, nickname)
+    //   const res = await axios.post('http://gcpeter.shop:8080/api/user/signup', {
+    //     "email": email, "password": pwd, "name": nickname
+    //   }, {headers: headers})
+    //   console.log(res)
+    // } catch(err) {
+    //   console.log(err)
+    // }
+    const res = await axios({
+      headers: { 
+        withCredentials: true,
+        "Access-Control-Allow-Origin": "http://localhost:8081",
+        'Accept': 'application/json',
+        'Content-Type' : 'application/json',
+      },
+      method: 'post',
+      url: 'http://gcpeter.shop:8080/api/user/signup',
+      data: {
+        "email": email,
+        "password": pwd,
+        "name": nickname,
+      }
+    })
+    .then((res) => {
+      alert('회원가입 완료')
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <CarrotMain style={styles.carrot}/>
+      <CarrotMain style={styles.carrot} />
       <View style={styles.form}>
         <Text style={styles.title}>회원가입</Text>
         <View style={styles.inputWrap}>
@@ -87,7 +123,7 @@ function SignUp() {
         </View>
         <Pressable
           style={btnStyle(isConfirm).btn}
-          onPress={() => handleSubmit(nickname, email, pwd)}
+          onPress={() => handleSubmit(email, pwd, nickname)}
           disabled={isConfirm ? false : true}
         ><Text style={btnStyle(isConfirm).text}>회원가입</Text></Pressable>
       </View>
@@ -149,14 +185,14 @@ const btnStyle = (isConfirm) => StyleSheet.create({
     borderRadius: 15,
 
   },
-  text :{
+  text: {
     color: isConfirm ? '#000000' : '#FFFFFF',
     paddingVertical: 18,
     paddingHorizontal: 24,
     textAlign: 'center',
     fontWeight: 'bold'
   }
- 
+
 });
 
 export default SignUp;

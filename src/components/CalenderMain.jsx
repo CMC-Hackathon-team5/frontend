@@ -1,13 +1,15 @@
 import { View, Text, SafeAreaView, StyleSheet, Dimensions, Pressable, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addDays, endOfMonth, endOfWeek, format, isSameMonth, parse, startOfMonth, startOfWeek } from 'date-fns'
 import Carrot100 from '../../assets/Carrot100'
 import Carrot80 from '../../assets/Carrot80'
 import Carrot20 from '../../assets/Carrot20'
 import Carrot40 from '../../assets/Carrot40'
 import Carrot60 from '../../assets/Carrot60'
+//import axios from 'axios';
+import Axios from '../common'
 
-function CalenderMain({ currDate, setSelectedDate, setIsSelected }) {
+function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate }) {
   const date = format(currDate, 'yyyy-MM-dd');
   const monthStart = startOfMonth(currDate)
   const monthEnd = endOfMonth(monthStart)
@@ -23,6 +25,53 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected }) {
   let day = startDate;
   let formattendDate = '';
 
+  const getData = async () => {
+    const response = await Axios.get('improvement-management/todo/month?date=2023-01-27');
+    console.log(response);
+  }
+  useEffect(() => {
+    getData();
+    // axios({
+    //   headers: {
+    //     withCredentials: true,
+    //     'Accept': '*/*',
+    //   },
+    //   method: 'get',
+    //   url: `http://gcpeter.shop:8080/api/improvement-management/todo/month`,
+    //   params: {
+    //     date: '2023-01-27'
+    //   }
+    // }).then((res) => {
+    //   console.log(res)
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
+
+  }, [selectedDate])
+
+  const onClickedDate = (cloneDay) => {
+    // let date = format(cloneDay, 'yyyy-MM-dd');
+    // console.log(date)
+    setSelectedDate(format(cloneDay, 'yyyy년 M월 d일'));
+    setIsSelected(true);
+
+    // axios({
+    //   headers: {
+    //     withCredentials: true,
+    //     "Access-Control-Allow-Origin": "http://localhost:3000",
+    //     'Accept': 'application/json',
+    //   },
+    //   method: 'get',
+    //   url: `http://gcpeter.shop:8080/api/improvement-management/todo`,
+    //   params: {
+    //     date: date
+    //   }
+    // }).then((res) => {
+    //   console.log(res)
+    // }).catch((err) => {
+    //   console.log(err)
+    // })
+  }
   let tmp = [{
     date: "2023-1-17",
     per: 30
@@ -72,8 +121,7 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected }) {
           style={dayStyles(dayWrapWidth, state).dayWrap}
           key={day}
           onPress={() => {
-            setSelectedDate(format(cloneDay, 'yyyy년 M월 d일'));
-            setIsSelected(true);
+            onClickedDate(cloneDay)
           }}
         >
           <Text style={styles(state).day}>{formattendDate}</Text>
