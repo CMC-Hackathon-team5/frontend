@@ -2,8 +2,9 @@ import { View, Text, StyleSheet, SafeAreaView, TextInput, Button, Pressable } fr
 import React, { useEffect, useState } from 'react'
 import CarrotMain from '../../assets/CarrotMain';
 import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-function SignIn() {
+function SignIn({navigation}) {
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
   const [pwd, setPwd] = useState("");
@@ -55,13 +56,17 @@ function SignIn() {
       },
       method: 'post',
       url: 'http://118.67.130.242:8080/api/user/login',
-      date: {
+      data: {
         "email": email, "password": pwd
       }
     })
     .then(res => {
-      console.log(res)
+      console.log(res.data.data.jwt)
+      const token = res.data.data.jwt
+      const stringValue = JSON.stringify(token);
+      AsyncStorage.setItem('token', stringValue);
       alert("로그인에 성공하였습니다.");
+      navigation.navigate('root')
     })
     .catch(err =>console.log(err))
   };
@@ -94,6 +99,9 @@ function SignIn() {
           onPress={() => handleSubmit(email, pwd)}
           disabled={isConfirm ? false : true}
         ><Text style={btnStyle(isConfirm).text}>로그인</Text></Pressable>
+        <Pressable onPress={() => navigation.navigate('SignUp')}>
+          <Text>회원가입</Text>
+        </Pressable>
       </View>
     </SafeAreaView>
   )

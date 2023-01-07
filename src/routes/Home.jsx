@@ -4,6 +4,8 @@ import PlusIcon from '../../assets/PlusIcon';
 import Axios, {getData, getDateFunc, getMovies, removeData, storeData} from '../common';
 import TodoItem from '../components/TodoItem';
 import axios from 'axios'
+import {getToken} from '../common'
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function Home({navigation}) {
   const [list, setList] = useState([])
@@ -41,8 +43,23 @@ function Home({navigation}) {
   }
 
   useEffect(() => {
-    getDateTodo()
-  }, [])
+    const getToken = async () => {
+      try {
+        const value = await AsyncStorage.getItem('token');
+        console.log('토큰 가져오기 ', value);
+        if (value !== null) {
+          const data = JSON.parse(value);
+          return data
+        } else {
+          navigation.navigate('SignIn')
+        }
+        } catch (e) {
+          console.log(e.message);
+        }
+      }
+      getToken()
+      getDateTodo()
+    }, [])
 
   return (
     <SafeAreaView style={styles.container}>

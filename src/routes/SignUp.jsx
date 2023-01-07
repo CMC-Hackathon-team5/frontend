@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CarrotMain from '../../assets/CarrotMain';
 import axios from 'axios'
 
-function SignUp() {
+function SignUp({navigation}) {
   const [nickname, setNickname] = useState("");
   const [email, setEmail] = useState("");
   const [isEmail, setIsEmail] = useState(false);
@@ -60,7 +60,10 @@ function SignUp() {
     await axios.post('http://118.67.130.242:8080/api/user/signup', {
       "email": email, "password": pwd, "name": nickname
     },config)
-    .then(res => console.log("성공", res))
+    .then(res => {
+      console.log("성공", res)
+      navigation.navigate('SignIn')
+    })
     .catch(err =>console.log(err))
   };
 
