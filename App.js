@@ -15,6 +15,8 @@ import SignIn from './src/routes/SignIn';
 import SignUp from './src/routes/SignUp';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AddTodo from './src/routes/AddTodo';
+import Profile from './src/routes/Profile';
+import Friends from './src/routes/Friends';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +28,8 @@ const App = () => {
         <Stack.Screen name='signUp' component={SignUp} />
         <Stack.Screen name='CalendarView' component={CalendarView} />
         <Stack.Screen name='AddTodo' component={AddTodo} />
+        <Stack.Screen name='Profile' component={Profile} />
+        <Stack.Screen name='Friends' component={Friends} />
       </Stack.Navigator>
     </NavigationContainer>
   );
