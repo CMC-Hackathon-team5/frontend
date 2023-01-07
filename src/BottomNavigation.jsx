@@ -16,7 +16,7 @@ const BottomNavigation = () => {
       <Tab.Navigator initialRouteName="Home" screenOptions={{ headerShown: false, tabBarStyle: { borderTopColor: '#fff' } }}>
         <Tab.Screen options={{ title: '홈', ...IconOption}} name="Home" component={Home} />
         <Tab.Screen options={{ title: '나의 로그', ...IconOption}} name="MyLog" component={MyLog} />
-        <Tab.Screen options={{ title: '알림', ...IconOption}} name="Alarm" component={Alarm} />
+        {/* <Tab.Screen options={{ title: '알림', ...IconOption}} name="Alarm" component={Alarm} /> */}
         <Tab.Screen options={{ title: '마이페이지', ...IconOption}} name="MyPage" component={MyPage} />
       </Tab.Navigator>
   )
