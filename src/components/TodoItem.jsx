@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import CheckIcon from "../../assets/CheckIcon";
 import MoreIcon from "../../assets/MoreIcon";
@@ -26,11 +26,18 @@ import PlusIcon from "../../assets/PlusIcon";
 
 // 5 
 // navigation > 이동해야 하는 경우 
-// <TodoItem navigation={navigation} /> 으로 import 해온 후
+// <TodoItem navigation={() => navigation.navigate('AddTodo')} /> 으로 import 해온 후
 // () => props.navigation.navigate('App.js 파일에 선언한 name 이름 입력') 로 이동
+
+// 6
+// done > 완료된 경우
 const TodoItem = (props) => {
-  const [isCheck, setIsCheck] = useState(false)
+  const [isCheck, setIsCheck] = useState()
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    setIsCheck(props.done)
+  }, [props])
 
   const Menu = (
     <View style={styles.menu}>
@@ -45,7 +52,7 @@ const TodoItem = (props) => {
   )
 
   return (
-    <View style={[styles.container, propsStyles(isCheck).isComplete, (props.navigation || props.add) && {backgroundColor: '#FDFF9E'}]}>
+    <View style={[styles.container, propsStyles(isCheck).isComplete, propsStyles(isOpen).isOpen, (props.navigation || props.add) && {backgroundColor: '#FDFF9E'}]}>
       <View style={styles.align}>
         {props.checked && <View style={styles.checkBox}>
           <Pressable onPress={() => setIsCheck(ele => !ele)}>
@@ -63,7 +70,7 @@ const TodoItem = (props) => {
         <MoreIcon />
       </Pressable> : props.add ?  <Pressable hitSlop={{ left: 1000, right: 1000, top: 30, bottom: 30 }}>
         <PlusIcon />
-      </Pressable> : <Pressable onPress={() => props.navigation.navigate('AddTodo')} hitSlop={{ left: 1000, right: 1000, top: 30, bottom: 30 }}>
+      </Pressable> : <Pressable onPress={() => props.navigation()} hitSlop={{ left: 1000, right: 1000, top: 30, bottom: 30 }}>
         <ArrowRight />
       </Pressable>}
     <>{isOpen && Menu}</>
@@ -81,6 +88,9 @@ const propsStyles = (props) => StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
   },
+  isOpen: {
+    zIndex: props ? 999 : 0
+  }
 })
 
 const styles = StyleSheet.create({

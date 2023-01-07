@@ -24,7 +24,7 @@ function MyLog({navigation}) {
           <TodoItem checked text="dummy text !" />
 
           <View style={styles.title}>
-            <Text style={styles.text}>오늘의 자기 개발 회고</Text>
+            <Text style={styles.text}>오늘의 자기 계발 회고</Text>
             <MoreIcon color="#B9B9B9" />
           </View> 
         </View>
