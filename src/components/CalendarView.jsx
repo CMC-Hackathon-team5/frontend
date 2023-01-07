@@ -16,7 +16,7 @@ function CalendarView() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <>
       <View style={styles.header}>
         <Button style={styles.arrow} title="<" color='#FFB44E' onPress={prevMonth}/>
         <Text style={styles.month}>{format(currDate, 'yyyy')}년 {format(currDate, 'M')}월</Text>
@@ -25,22 +25,18 @@ function CalendarView() {
       <View style={styles.days}>
         {days.map((d) => (
           <Text style={dayStyles(d).day}>{d}</Text>
-        ))}
+          ))}
       </View>
       <CalenderMain 
         currDate={currDate}
         prevMonth={prevMonth}
         nextMonth={nextMonth}
-      />
-    </SafeAreaView>
+        />
+    </>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'white',
-    marginHorizontal: 20,
-  },
   header: {
     display: 'flex',
     flexDirection: 'row',

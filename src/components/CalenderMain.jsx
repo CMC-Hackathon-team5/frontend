@@ -96,10 +96,7 @@ function CalenderMain({ currDate, prevMonth, nextMonth }) {
 export default CalenderMain;
 
 const style = StyleSheet.create({
-
   week: {
-    borderColor: 'black',
-    borderWidth: 1,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-around'
@@ -109,11 +106,11 @@ const style = StyleSheet.create({
 const styles = (dayWrapWidth, state) => StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFFFFF'
   },
   day: {
     color: state ? '#000000' : '#b7b6b6',
   },
-
 });
 
 const dayStyles = (dayWrapWidth, state) => StyleSheet.create({
@@ -124,20 +121,4 @@ const dayStyles = (dayWrapWidth, state) => StyleSheet.create({
     opacity: state ? 0.9 : 0.7,
     borderRadius: 10
   },
-  day: {
-    color: state ? '#000000' : '#b7b6b6',
-  },
-  week: {
-    borderColor: 'black',
-    borderWidth: 1,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-around'
-  },
-  rows: {
-    borderColor: 'yellow',
-    borderWidth: 1,
-    // display: 'flex',
-    // flexDirection: 'row'
-  }
 });
