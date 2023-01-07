@@ -37,7 +37,7 @@ const TodoItem = (props) => {
 
   useEffect(() => {
     setIsCheck(props.done)
-  }, [props])
+  }, [props.done])
 
   const Menu = (
     <View style={styles.menu}>
@@ -63,12 +63,12 @@ const TodoItem = (props) => {
           </Pressable>
         </View>}
         {props.placeholder ?
-        <TextInput style={styles.text} returnKeyType="done" placeholderTextColor="#B9B9B9" placeholder="상세 내용을 입력하세요!" />
+        <TextInput onSubmitEditing={props.onSubmit} value={props.value} onChangeText={props.onChange} style={styles.text} returnKeyType="done" placeholderTextColor="#B9B9B9" placeholder="상세 내용을 입력하세요!" />
         : <Text style={styles.text}>{props.text}</Text>}
       </View>
       {props.checked ? !props.placeholder && <Pressable hitSlop={{ left: 10, right: 10 }} onPress={() => setIsOpen(ele => !ele)}>
         <MoreIcon />
-      </Pressable> : props.add ?  <Pressable hitSlop={{ left: 1000, right: 1000, top: 30, bottom: 30 }}>
+      </Pressable> : props.add ?  <Pressable onPress={props.onPress} hitSlop={{ left: 1000, right: 1000, top: 30, bottom: 30 }}>
         <PlusIcon />
       </Pressable> : <Pressable onPress={() => props.navigation()} hitSlop={{ left: 1000, right: 1000, top: 30, bottom: 30 }}>
         <ArrowRight />

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native";
-import CheckIcon from "../../assets/CheckIcon";
-import CheckedBox from "../../assets/CheckedBox";
 
 const InfoItem = (props) => {
   const [text, setText] = useState('')

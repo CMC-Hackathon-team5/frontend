@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Pressable, Button } from 'react-native';
 import PlusIcon from '../../assets/PlusIcon';
-import Axios, {getDateFunc, getMovies} from '../common';
+import Axios, {getData, getDateFunc, getMovies, removeData, storeData} from '../common';
 import TodoItem from '../components/TodoItem';
 import axios from 'axios'
 
 function Home({navigation}) {
   const [list, setList] = useState([])
+  const [todoText, setTodoText] = useState('')
 
   const date = new Date()
   const year = date.getFullYear();
@@ -27,10 +28,20 @@ function Home({navigation}) {
     }
   }
 
+  const onSubmit = async () => {
+    setList(ele => ele.concat({title: todoText, done: false}))
+    try {
+      const response = await Axios.post('/api/improvement-management/todo', {
+        title: todoText,
+        date: `${year}-${month}-${day}`,
+      })
+    } catch (error) {
+      console.error('getDateTodo', error);
+    }
+  }
+
   useEffect(() => {
-    getDateFunc()
     getDateTodo()
-    getMovies()
   }, [])
 
   return (
@@ -52,7 +63,7 @@ function Home({navigation}) {
         </>
         : <>
           <TodoItem text="자기 계발 추가하기" navigation={() => navigation.navigate('AddTodo')} /> 
-          <TodoItem placeholder checked /> 
+          <TodoItem onSubmit={onSubmit} value={todoText} onChange={setTodoText} placeholder checked /> 
           <Text style={styles.noList}>
             오늘은 예정된 자기 계발이 없어요.{"\n"}
             버튼을 눌러 반짝이는 3시간을 만들어볼까요?
