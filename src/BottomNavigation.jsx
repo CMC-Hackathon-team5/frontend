@@ -1,23 +1,23 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native';
-import MyPage from './routes/MyPage';
-import SignUp from './routes/SignUp';
+import Home from './routes/Home';
 import CalendarView from './components/CalendarView';
+import MyPage from './routes/MyPage';
+import Alarm from './routes/Alarm';
+import UnSelectTab from '../assets/UnSelectTab';
+import SelectTab from '../assets/SelectTab';
 
 const Tab = createBottomTabNavigator();
 
-function Home() {
-  return <Text>Home</Text>;
-}
-
 const BottomNavigation = () => {
+  const IconOption = { tabBarIconStyle: { marginBottom: 10 }, tabBarActiveTintColor: '#000', tabBarInactiveTintColor: '#000', tabBarIcon: ({focused}) => focused ? <SelectTab /> : <UnSelectTab /> }
+
   return (
-      <Tab.Navigator initialRouteName="Home" screenOptions={{ headerShown: false }}>
-        <Tab.Screen name="MyPage" component={MyPage} />
-        <Tab.Screen name="Home" component={Home} />
-        <Tab.Screen name="Search" component={CalendarView} />
-        <Tab.Screen name="SignUp" component={SignUp} />
+      <Tab.Navigator initialRouteName="Home" screenOptions={{ headerShown: false, tabBarStyle: { borderTopColor: '#fff' } }}>
+        <Tab.Screen options={{ title: '홈', ...IconOption}} name="Home" component={Home} />
+        <Tab.Screen options={{ title: '나의 로그', ...IconOption}} name="MyLog" component={CalendarView} />
+        <Tab.Screen options={{ title: '알림', ...IconOption}} name="Alarm" component={Alarm} />
+        <Tab.Screen options={{ title: '마이페이지', ...IconOption}} name="MyPage" component={MyPage} />
       </Tab.Navigator>
   )
 }

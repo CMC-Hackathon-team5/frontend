@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { SafeAreaView, StyleSheet, Text, View, Pressable } from 'react-native';
 
-function MyPage({navigation}) {
+function Alarm({navigation}) {
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.view}>
-        <Text style={styles.date}>My Page</Text>
+        <Text style={styles.date}>MyLog</Text>
       </View>
     </SafeAreaView>
   )
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default MyPage;
+export default Alarm;
