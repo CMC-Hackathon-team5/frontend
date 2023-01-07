@@ -11,7 +11,10 @@ export const getDateTodo = async () => {
     const response = await Axios.get(`/api/improvement-management/todo?date=2023-01-01`)
     console.log('common', response.data)
     return response.data
-})
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export const getData = async () => {
   try {
