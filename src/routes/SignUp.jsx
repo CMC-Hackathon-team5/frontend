@@ -114,11 +114,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
     backgroundColor: "#ffffff",
     textAlign: 'center',
   },
   carrot: {
+    marginTop: 66,
     position: 'relative',
     left: '75%'
   },

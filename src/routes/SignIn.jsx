@@ -117,11 +117,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     display: 'flex',
-    justifyContent: 'center',
     backgroundColor: "#ffffff",
     textAlign: 'center',
   },
   carrot: {
+    marginTop: 66,
     position: 'relative',
     left: '75%'
   },
@@ -164,6 +164,7 @@ const btnStyle = (isConfirm) => StyleSheet.create({
     backgroundColor: isConfirm ? '#E2FFA4' : '#B9b9b9',
     width: '80%',
     borderRadius: 15,
+    marginBottom: 16
   },
   text :{
     color: isConfirm ? '#000000' : '#FFFFFF',
@@ -172,7 +173,6 @@ const btnStyle = (isConfirm) => StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold'
   }
- 
 });
 
 export default SignIn;
