@@ -22,7 +22,6 @@ const App = () => {
   const getToken = async () => {
     try {
       const value = await AsyncStorage.getItem('token');
-      console.log('get token ', value);
       if (value !== null) {
         const data = JSON.parse(value);
         setToken(data)
@@ -35,16 +34,16 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        {token ? <>
+{!token && <>
+        <Stack.Screen name='SignIn' component={SignIn} />
+        <Stack.Screen name='SignUp' component={SignUp} />
+</>
+}        
           <Stack.Screen name='root' component={BottomNavigation} />
           <Stack.Screen name='CalendarView' component={CalendarView} />
           <Stack.Screen name='AddTodo' component={AddTodo} />
           <Stack.Screen name='Profile' component={Profile} />
           <Stack.Screen name='Friends' component={Friends} />
-        </> : <>
-          <Stack.Screen name='SignIn' component={SignIn} />
-          <Stack.Screen name='SignUp' component={SignUp} />
-        </>}
       </Stack.Navigator>
     </NavigationContainer>
   );

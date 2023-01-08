@@ -5,6 +5,7 @@ import MoreIcon from "../../assets/MoreIcon";
 import CheckedBox from "../../assets/CheckedBox";
 import ArrowRight from "../../assets/ArrowRight";
 import PlusIcon from "../../assets/PlusIcon";
+import axios from "axios"
 
 // 받고 있는 Props 설명
 
@@ -39,6 +40,20 @@ const TodoItem = (props) => {
     setIsCheck(props.done)
   }, [props.done])
 
+  const clickCheck = async () => {
+    try {
+      const response = await axios.post('http://118.67.130.242:8080/api/improvement-management/todo/check', {
+          title: props.text,
+          date: props.date
+        }, {
+          headers: {'Authorization': `Bearer ${props.token}`}
+        })
+        setIsCheck(response.data.data.done)
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   const Menu = (
     <View style={styles.menu}>
       <Pressable onPress={() => console.log('수정하기')}>
@@ -55,7 +70,7 @@ const TodoItem = (props) => {
     <View style={[styles.container, propsStyles(isCheck).isComplete, propsStyles(isOpen).isOpen, (props.navigation || props.add) && {backgroundColor: '#FDFF9E'}]}>
       <View style={styles.align}>
         {props.checked && <View style={styles.checkBox}>
-          <Pressable onPress={() => setIsCheck(ele => !ele)}>
+          <Pressable onPress={clickCheck}>
             <CheckedBox />
             {isCheck && <View style={styles.checked}>
               <CheckIcon />

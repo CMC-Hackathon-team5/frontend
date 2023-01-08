@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import CarrotMain from '../../assets/CarrotMain';
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from '@react-navigation/native';
 
 function SignIn({navigation}) {
   const [email, setEmail] = useState("");
@@ -11,6 +12,7 @@ function SignIn({navigation}) {
   const [isPwd, setIsPwd] = useState(false);
 
   const [isConfirm, setIsConfirm] = useState(false);
+  const [isLogin, setIsLogin] = useState(false)
 
   useEffect(() => {
     if (isEmail && isPwd) {
@@ -66,10 +68,13 @@ function SignIn({navigation}) {
       const stringValue = JSON.stringify(token);
       AsyncStorage.setItem('token', stringValue);
       alert("로그인에 성공하였습니다.");
-      navigation.navigate('root')
     })
     .catch(err =>console.log(err))
   };
+
+  useEffect(() => {
+    setIsLogin(true)    
+  }, [isLogin])
 
   return (
     <SafeAreaView style={styles.container}>
