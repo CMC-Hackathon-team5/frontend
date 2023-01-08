@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Button, Image, Pressable, SafeAreaView, StyleSheet, Text, View } from 'react-native';
 import { addMonths, format, startOfMonth, subMonths } from 'date-fns';
 import CalenderMain from './CalenderMain';
+import ArrowRight from '../../assets/ArrowRight';
 
 function CalendarView({setSelectedDate, selectedDate, setIsSelected, setDate}) {
   const [currDate, setCurrDate] = useState(new Date())
@@ -17,9 +18,13 @@ function CalendarView({setSelectedDate, selectedDate, setIsSelected, setDate}) {
   return (
     <>
       <View style={styles.header}>
-        <Button style={styles.arrow} title="<" color='#FFB44E' onPress={prevMonth}/>
+        <Pressable hitSlop={10} style={[styles.arrow, {transform: [{rotate: '180deg'}]}]} onPress={prevMonth}>
+          <ArrowRight color='#FFB44E' />
+        </Pressable>
         <Text style={styles.month}>{format(currDate, 'yyyy')}년 {format(currDate, 'M')}월</Text>
-        <Button style={styles.arrow} title=">" color='#FFB44E' onPress={nextMonth}/>
+        <Pressable hitSlop={10} style={styles.arrow} onPress={nextMonth}>
+          <ArrowRight color='#FFB44E' />
+        </Pressable>
       </View>
       <View style={styles.days}>
         {days.map((d, i) => (
@@ -43,6 +48,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
+    marginBottom: 10
   },
   month: {
     fontSize: 16,

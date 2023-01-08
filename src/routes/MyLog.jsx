@@ -96,6 +96,7 @@ const styles = StyleSheet.create({
   },
   view: {
     paddingHorizontal: 30,
+    paddingTop: 30
   },
   date: {
     fontSize: 24,
