@@ -4,8 +4,8 @@ import Svg, { Path, Defs, Pattern, Use, Image } from "react-native-svg"
 function Carrot40(props) {
   return (
     <Svg
-      width={50}
-      height={30}
+      width={60}
+      height={40}
       viewBox="0 0 30 38"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

@@ -45,8 +45,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   month: {
-    fontSize: 26,
-    textAlign: 'center'
+    fontSize: 16,
+    textAlign: 'center',
   },
   days: {
     display: 'flex',

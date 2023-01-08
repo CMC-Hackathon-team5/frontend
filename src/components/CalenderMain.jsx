@@ -20,7 +20,7 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, 
   const year = format(currDate, 'yyyy')
   const month = format(currDate, 'M')
 
-  const [perObj, setPerObj] = useState({});
+  const [perObj, setPerObj] = useState([]);
 
   const rows = [];
   let days = [];
@@ -98,7 +98,10 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, 
           }}
         >
           <Text style={styles(state).day}>{formattendDate}</Text>
-          {(obj !== undefined) && carrotIcon(obj.percent)}
+          {(obj !== undefined) && <View style={style.carrot}>
+          {carrotIcon(obj.percent)}
+          </View>
+          }
         </Pressable>
       )
       day = addDays(day, 1);
@@ -130,6 +133,10 @@ const style = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around'
   },
+  carrot: {
+    position: 'absolute',
+    bottom: 5
+  }
 })
 
 const styles = (state) => StyleSheet.create({
@@ -140,10 +147,11 @@ const styles = (state) => StyleSheet.create({
 
 const dayStyles = (dayWrapWidth, state) => StyleSheet.create({
   dayWrap: {
+    justifyContent: 'center',
+    alignItems: 'center', 
     width: dayWrapWidth,
     height: dayWrapWidth,
-    backgroundColor: state ? '#cccccc' : '#e3e2e2',
     opacity: state ? 0.9 : 0.7,
-    borderRadius: 10
+    borderRadius: 10,
   },
 });
