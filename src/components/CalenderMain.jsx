@@ -7,6 +7,7 @@ import Carrot20 from '../../assets/Carrot20'
 import Carrot40 from '../../assets/Carrot40'
 import Carrot60 from '../../assets/Carrot60'
 import axios from 'axios';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, setDate }) {
   const date = format(currDate, 'yyyy-MM-dd');
@@ -25,15 +26,35 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, 
   let days = [];
   let day = startDate;
   let formattendDate = '';
-  
+
+  const getToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        const data = JSON.parse(value);
+        getData('eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwidG9rZW5fdHlwZSI6ImFjY2Vzc190b2tlbiIsImlhdCI6MTY3MzEzNDU5MSwiZXhwIjoxNjgzMTM0NTkxfQ.MnPON0bsFE3Wob2KT3_lTitvjb0-BMyL-FSCRxzDrhM')
+        return data
+      } else {
+        // navigation.navigate('SignIn')
+      }
+    } catch (e) {
+      console.log('??', e.message);
+    }
+  }
+
+  const getData = (data) => {
+    axios.get(`http://118.67.130.242:8080/api/improvement-management/todo/month?date=${date}`, {
+      headers: {'Authorization': `Bearer ${data}`,  'Content-Type' : 'application/json',}
+    }).then((res) => {
+        setPerObj(res.data.data)
+      })
+      .catch((error) => {
+        console.log('aaaaaaa', error)
+      })
+  }
+
   useEffect(() => {
-    axios.get( `http://118.67.130.242:8080/api/improvement-management/todo/month?date=${date}`)
-    .then((res) => {
-      setPerObj(res.data.data)
-    })
-    .catch((error) => {
-      console.log(err)
-    })
+    getToken();
   }, [month])
 
 
@@ -58,8 +79,9 @@ function CalenderMain({ currDate, setSelectedDate, setIsSelected, selectedDate, 
       return <Carrot100 />
     }
   }
-
+  console.log(perObj)
   while (day <= endDate) {
+
     for (let i = 0; i < 7; i++) {
       formattendDate = format(day, 'd')
       const cloneDay = day;
