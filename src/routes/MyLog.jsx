@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+import { SafeAreaView, StyleSheet, Text, View, Pressable, ScrollView, TextInput } from 'react-native';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import MoreIcon from '../../assets/MoreIcon';
 import CalendarView from '../components/CalendarView';
@@ -12,7 +12,11 @@ function MyLog({ navigation }) {
   const [selectedDate, setSelectedDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [isSelected, setIsSelected] = useState(false);
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
-  const [todo, setTodo] = useState({});
+  const [todo, setTodo] = useState([]);
+  const [diary, setDiary] = useState({})
+
+  const [writeDiary, setWriteDiary] = useState("");
+
   console.log(date)
 
   const getToken = async () => {
@@ -32,29 +36,39 @@ function MyLog({ navigation }) {
   }
 
   const getData = (data) => {
-    axios.get(`http://118.67.130.242:8080/api/improvement-management/todo/?date=${date}`,{
-      headers: {'Authorization': `Bearer ${data}`}
+    axios.get(`http://118.67.130.242:8080/api/improvement-management/todo/?date=${date}`, {
+      headers: { 'Authorization': `Bearer ${data}` }
     })
       .then((res) => {
         setTodo(res.data.data)
-        console.log('res', res.data.data)
       })
       .catch((error) => {
         console.log('aaa', error)
+      })
+
+    axios.get(`http://118.67.130.242:8080/api/diary/day/?date=${date}`, {
+      headers: { 'Authorization': `Bearer ${data}` }
+    })
+      .then((res) => {
+        setDiary(res.data.data)
+        console.log('res', res.data.data)
+      })
+      .catch((error) => {
+        setDiary({});
       })
   }
 
   useEffect(() => {
     getToken();
   }, [selectedDate])
- 
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.view}>
-          <CalendarView 
-            setSelectedDate={setSelectedDate} 
-            selectedDate={selectedDate} 
+          <CalendarView
+            setSelectedDate={setSelectedDate}
+            selectedDate={selectedDate}
             setIsSelected={setIsSelected}
             setDate={setDate}
           />
@@ -64,16 +78,19 @@ function MyLog({ navigation }) {
             {todo.map((e) => (
               <TodoItem checked={!e.done} text={e.title} />
             ))}
-            {/* {todo != {}  ? {todo.map((e) => (
-              console.log(e)
-                <TodoItem checked={!do.done} text={do.title} />
-               ))} : null} */}
           </>}
 
           <View style={styles.title}>
             <Text style={styles.text}>오늘의 자기 개발 회고</Text>
             <MoreIcon color="#B9B9B9" />
-          </View> 
+          </View>
+          {Object.keys(diary).length > 0 ? <View style={styles.inputWrap}>
+            <Text>{diary.content}</Text>
+          </View>
+          :  <TextInput style={styles.inputWrap} value={writeDiary} onChange={(e) => {
+            setWriteDiary(e.nativeEvent.text)
+          }} />
+          }
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -86,7 +103,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   title: {
-    marginTop: 30,
+    marginVertical: 25,
     flexDirection: 'row',
     justifyContent: 'space-between'
   },
@@ -103,6 +120,16 @@ const styles = StyleSheet.create({
     marginTop: 40,
     fontWeight: "600"
   },
+  inputWrap: {
+    paddingVertical: 18,
+    paddingHorizontal: 22,
+    borderRadius: 20,
+    borderColor: '#B9B9B9',
+    borderWidth: 1,
+    fontSize: 16,
+    color: 'black',
+    backgroundColor: '#FFFFFF',
+  }
 })
 
 export default MyLog;
