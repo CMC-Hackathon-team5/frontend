@@ -97,6 +97,8 @@ function SignUp({navigation}) {
             onChange={(e) => onChangePwd(e)}
             value={pwd}
             autoCapitalize='none'
+            secureTextEntry
+            returnKeyType='done'
           />
         </View>
         <Pressable

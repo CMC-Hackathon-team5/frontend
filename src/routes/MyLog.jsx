@@ -75,8 +75,10 @@ function MyLog({ navigation }) {
 
           {isSelected && <>
             <Text style={styles.date}>{selectedDate}</Text>
-            {todo.map((e) => (
-              <TodoItem checked={!e.done} text={e.title} />
+            {todo.map((e, i) => (
+              <React.Fragment key={i}>
+                <TodoItem checked done={e.done} text={e.title} />
+              </React.Fragment>
             ))}
           </>}
 
